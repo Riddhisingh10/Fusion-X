@@ -6,7 +6,7 @@ import {
 } from 'recharts';
 import {
     Wallet, TrendingUp, TrendingDown, CreditCard, ArrowUpRight,
-    ArrowDownRight, RefreshCw, AlertTriangle, IndianRupee, Zap
+    ArrowDownRight, RefreshCw, AlertTriangle, Zap, Send
 } from 'lucide-react';
 import { createClient } from '../../utils/supabase/client';
 import './FeatureStyles.css';
@@ -22,8 +22,12 @@ const RFIDWallet = () => {
     const [walletData, setWalletData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [rechargeAmount, setRechargeAmount] = useState('');
+    const [withdrawAmount, setWithdrawAmount] = useState('');
+    const [withdrawUpi, setWithdrawUpi] = useState('');
     const [recharging, setRecharging] = useState(false);
+    const [withdrawing, setWithdrawing] = useState(false);
     const [activeTab, setActiveTab] = useState('overview');
+    const [withdrawMessage, setWithdrawMessage] = useState({ text: '', type: '' });
 
     const fetchWalletData = async () => {
         setLoading(true);
@@ -41,6 +45,12 @@ const RFIDWallet = () => {
 
     useEffect(() => {
         fetchWalletData();
+        // Load Razorpay script
+        const script = document.createElement('script');
+        script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+        script.async = true;
+        document.body.appendChild(script);
+
         // Real-time subscription for transaction updates
         const supabase = createClient();
         const channel = supabase
@@ -61,19 +71,91 @@ const RFIDWallet = () => {
         if (!amount || amount <= 0) return;
         setRecharging(true);
         try {
-            const res = await fetch('/api/rfid/recharge', {
+            // 1. Create order
+            const orderRes = await fetch('/api/wallet/recharge/create-order', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ amount, source: 'online' }),
+                body: JSON.stringify({ amount }),
             });
-            if (res.ok) {
-                setRechargeAmount('');
-                fetchWalletData();
-            }
+            const orderData = await orderRes.json();
+
+            if (!orderRes.ok) throw new Error(orderData.message);
+
+            // 2. Configure Razorpay
+            const options = {
+                key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || 'rzp_test_mock',
+                amount: orderData.amount,
+                currency: orderData.currency,
+                name: 'Smart Campus Wallet',
+                description: 'Wallet Recharge',
+                order_id: orderData.id,
+                handler: async function (response) {
+                    // 3. Verify payment
+                    const verifyRes = await fetch('/api/wallet/recharge/verify', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            razorpay_order_id: response.razorpay_order_id,
+                            razorpay_payment_id: response.razorpay_payment_id,
+                            razorpay_signature: response.razorpay_signature,
+                            amount: amount
+                        })
+                    });
+                    
+                    if (verifyRes.ok) {
+                        setRechargeAmount('');
+                        fetchWalletData();
+                        alert('Payment successful! Wallet recharged.');
+                    } else {
+                        alert('Payment verification failed.');
+                    }
+                },
+                prefill: {
+                    name: 'Student',
+                    email: 'student@campus.com',
+                },
+                theme: { color: '#6366f1' }
+            };
+
+            const rzp = new window.Razorpay(options);
+            rzp.on('payment.failed', function (response) {
+                alert('Payment Failed: ' + response.error.description);
+            });
+            rzp.open();
         } catch (err) {
-            console.error('Recharge failed:', err);
+            console.error('Recharge flow failed:', err);
+            alert('Failed to initiate payment.');
         }
         setRecharging(false);
+    };
+
+    const handleWithdraw = async () => {
+        const amount = parseFloat(withdrawAmount);
+        if (!amount || amount <= 0 || !withdrawUpi) return;
+        setWithdrawing(true);
+        setWithdrawMessage({ text: '', type: '' });
+        
+        try {
+            const res = await fetch('/api/wallet/withdraw', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ amount, upiId: withdrawUpi }),
+            });
+            const data = await res.json();
+            
+            if (res.ok) {
+                setWithdrawAmount('');
+                setWithdrawUpi('');
+                setWithdrawMessage({ text: data.message, type: 'success' });
+                fetchWalletData();
+            } else {
+                setWithdrawMessage({ text: data.message || 'Withdrawal failed', type: 'error' });
+            }
+        } catch (err) {
+            console.error('Withdrawal failed:', err);
+            setWithdrawMessage({ text: 'Network error. Try again.', type: 'error' });
+        }
+        setWithdrawing(false);
     };
 
     const categoryData = walletData?.insights?.categories
@@ -166,10 +248,61 @@ const RFIDWallet = () => {
                                 disabled={recharging}
                             >
                                 {recharging ? <RefreshCw size={16} className="spin-icon" /> : <Zap size={16} />}
-                                Recharge
+                                Pay via Razorpay
                             </button>
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '2rem', marginBottom: '2rem' }}>
+                {/* Withdraw Section */}
+                <div className="card" style={{ background: 'rgba(245,158,11,0.05)', borderColor: 'rgba(245,158,11,0.2)' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
+                        <Send size={20} color="#f59e0b" />
+                        <h3 style={{ fontSize: '1.1rem', fontWeight: 700 }}>Withdraw to UPI</h3>
+                    </div>
+                    <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '1rem' }}>
+                        Transfer your wallet balance instantly to any UPI ID.
+                    </p>
+                    <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'flex-start' }}>
+                        <input
+                            type="text"
+                            placeholder="Enter UPI ID (e.g. name@okhdfc)"
+                            value={withdrawUpi}
+                            onChange={e => setWithdrawUpi(e.target.value)}
+                            style={{ flex: 1, minWidth: '200px' }}
+                        />
+                        <input
+                            type="number"
+                            placeholder="Amount ₹"
+                            value={withdrawAmount}
+                            onChange={e => setWithdrawAmount(e.target.value)}
+                            style={{ width: '120px' }}
+                            max={walletData?.balance || 0}
+                        />
+                        <button
+                            className="view-btn"
+                            style={{ width: 'auto', padding: '12px 24px', background: '#f59e0b', color: '#000' }}
+                            onClick={handleWithdraw}
+                            disabled={withdrawing || !withdrawUpi || !withdrawAmount}
+                        >
+                            {withdrawing ? <RefreshCw size={16} className="spin-icon" /> : 'Withdraw Funds'}
+                        </button>
+                    </div>
+                    {withdrawMessage.text && (
+                        <div style={{
+                            marginTop: '1rem',
+                            padding: '10px',
+                            borderRadius: '6px',
+                            fontSize: '0.85rem',
+                            background: withdrawMessage.type === 'success' ? 'rgba(34,197,94,0.1)' : 'rgba(239,68,68,0.1)',
+                            color: withdrawMessage.type === 'success' ? '#22c55e' : '#ef4444',
+                            border: `1px solid ${withdrawMessage.type === 'success' ? 'rgba(34,197,94,0.2)' : 'rgba(239,68,68,0.2)'}`
+                        }}>
+                            {withdrawMessage.text}
+                        </div>
+                    )}
                 </div>
             </div>
 
