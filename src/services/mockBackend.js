@@ -7,12 +7,15 @@ export const mockBackend = {
         { id: 'mock-parent-id', name: 'Demo Parent', email: '3', role: 'parent', password: '3' },
 
         // Requested VVCE Accounts
-        { id: '00000000-0000-0000-0000-000000000001', name: 'bharath kumar a', email: 'bk@vvce', role: 'student', password: 'bk', usn: '4VV25EC001' },
-        { id: '00000000-0000-0000-0000-000000000002', name: 'bharath p', email: 'bp@vvce', role: 'student', password: 'bp', usn: '4VV25EC002' },
-        { id: '00000000-0000-0000-0000-000000000003', name: 'anagha', email: 'anagha@vvce', role: 'student', password: 'anagha', usn: '4VV25EC003' },
-        { id: '00000000-0000-0000-0000-000000000004', name: 'bhavana', email: 'bhav@vvce', role: 'teacher', password: 'bhav', subject: '1BMATE201 - Applied Mathematics - II for EE Stream' },
-        { id: '00000000-0000-0000-0000-000000000005', name: 'abhi', email: 'abhi@vvce', role: 'parent', password: 'abhi', childEmail: 'bp@vvce', childId: '00000000-0000-0000-0000-000000000002' },
-        { id: '00000000-0000-0000-0000-000000000006', name: 'preksha', email: 'preksha@vvce', role: 'parent', password: 'preksha', childEmail: 'bp@vvce', childId: '00000000-0000-0000-0000-000000000002' }
+        { id: '00000000-0000-0000-0000-000000000001', name: 'bharath kumar a', email: 'bk@vvce', role: 'student', password: 'bk', usn: '032' },
+        { id: '00000000-0000-0000-0000-000000000002', name: 'ananya yk', email: 'ananya@vvce', role: 'student', password: 'ananya', usn: '012' },
+        { id: '00000000-0000-0000-0000-000000000003', name: 'riddhi', email: 'riddhi@vvce', role: 'student', password: 'riddhi', usn: '099' },
+        { id: '00000000-0000-0000-0000-000000000007', name: 'rishith', email: 'rishith@vvce', role: 'student', password: 'rishith', usn: '089' },
+        { id: '00000000-0000-0000-0000-000000000008', name: 'bharath p', email: 'bp@vvce', role: 'student', password: 'bp', usn: '008' },
+        { id: '00000000-0000-0000-0000-000000000009', name: 'anagha', email: 'anagha@vvce', role: 'student', password: 'anagha', usn: '003' },
+        { id: '00000000-0000-0000-0000-000000000004', name: 'bhavana', email: 'bhav@vvce', role: 'teacher', password: 'bhav', subject: '1BCS201 - Introduction to Computer Science' },
+        { id: '00000000-0000-0000-0000-000000000005', name: 'abhi', email: 'abhi@vvce', role: 'parent', password: 'abhi', childEmail: 'ananya@vvce', childId: '00000000-0000-0000-0000-000000000002' },
+        { id: '00000000-0000-0000-0000-000000000006', name: 'preksha', email: 'preksha@vvce', role: 'parent', password: 'preksha', childEmail: 'ananya@vvce', childId: '00000000-0000-0000-0000-000000000002' }
     ],
 
     schoolSubjects: ['Mathematics', 'Science', 'Social Studies', 'English', 'Computer Science', 'Art', 'Physical Education'],
@@ -76,7 +79,7 @@ export const mockBackend = {
             { course: '1BENGK208 - Communication Skills - 2', present: 10, total: 10, percentage: 100.00 },
             { course: '1BICOK210 - Indian Constitution and Engineering Ethics', present: 9, total: 10, percentage: 90.00 },
             { course: '1BIEEK205 - Introduction to Electrical Engineering', present: 21, total: 28, percentage: 75.00 },
-            { course: '1BMATE201 - Applied Mathematics - II for EE Stream', present: 41, total: 47, percentage: 87.23 },
+            { course: '1BCS201 - Introduction to Computer Science for CSE Stream', present: 41, total: 47, percentage: 87.23 },
             { course: '1BPBLK209 - Interdisciplinary Project - Based Learning (Social Innovation Project)', present: 7, total: 7, percentage: 100.00 },
             { course: '1BPHYT202 - Applied Physics for ECE Stream', present: 25, total: 29, percentage: 86.21 },
             { course: '1BPHYTL206 - Applied Physics Lab for ECE Stream', present: 8, total: 8, percentage: 100.00 },
@@ -90,11 +93,11 @@ export const mockBackend = {
             { course: '1BPHYTL206 - Applied Physics Lab for ECE Stream', date: '02-03-2026', day: 'Monday', present: 1, total: 1, doc: '', docStatus: '' },
             { course: '1BPHYT202 - Applied Physics for ECE Stream', date: '02-04-2026', day: 'Thursday', present: 1, total: 1, doc: '', docStatus: '' },
             { course: '1BIEEK205 - Introduction to Electrical Engineering', date: '02-04-2026', day: 'Thursday', present: 1, total: 1, doc: '', docStatus: '' },
-            { course: '1BMATE201 - Applied Mathematics - II for EE Stream', date: '02-04-2026', day: 'Thursday', present: 1, total: 1, doc: '', docStatus: '' },
+            { course: '1BCS201 - Introduction to Computer Science for CSE Stream', date: '02-04-2026', day: 'Thursday', present: 1, total: 1, doc: '', docStatus: '' },
             { course: '1BPLCO203 - Introduction to C Programming', date: '02-04-2026', day: 'Thursday', present: 1, total: 1, doc: '', docStatus: '' },
             { course: '1BCEDT204 - Computer Aided Engineering Drawing for ECE Stream', date: '02-04-2026', day: 'Thursday', present: 1, total: 1, doc: '', docStatus: '' },
             { course: '1BIEEK205 - Introduction to Electrical Engineering', date: '03-03-2026', day: 'Tuesday', present: 1, total: 1, doc: '', docStatus: '' },
-            { course: '1BMATE201 - Applied Mathematics - II for EE Stream', date: '04-03-2026', day: 'Wednesday', present: 1, total: 2, doc: '', docStatus: '' }
+            { course: '1BCS201 - Introduction to Computer Science for CSE Stream', date: '04-03-2026', day: 'Wednesday', present: 1, total: 2, doc: '', docStatus: '' }
         ]
     },
 
@@ -192,51 +195,92 @@ export const mockBackend = {
         schedule: [
             {
                 day: 'Monday', slots: [
-                    { period: 1, span: 2, subject: 'COM SKILLS', type: 'Lecture' },
-                    { period: 3, span: 2, subject: 'PHY LAB', type: 'Lab' },
-                    { period: 5, span: 2, subject: 'INUNITY', type: 'Lecture' },
+                    { period: 1, span: 2, subject: 'CSE', type: 'Lecture' },
+                    { period: 3, span: 2, subject: 'ECE', type: 'Lab' },
+                    { period: 5, span: 2, subject: 'AIML', type: 'Lecture' },
                 ]
             },
             {
                 day: 'Tuesday', slots: [
-                    { period: 1, span: 1, subject: 'EC', type: 'Lecture' },
-                    { period: 2, span: 1, subject: 'CONS', type: 'Lecture' },
-                    { period: 3, span: 1, subject: 'C', type: 'Lecture' },
-                    { period: 4, span: 1, subject: 'MAT', type: 'Lecture' },
-                    { period: 5, span: 2, subject: 'CADE-LAB', type: 'Lab' },
+                    { period: 1, span: 1, subject: 'EEE', type: 'Lecture' },
+                    { period: 2, span: 1, subject: 'ME', type: 'Lecture' },
+                    { period: 3, span: 1, subject: 'CV', type: 'Lecture' },
+                    { period: 5, span: 2, subject: 'CSE', type: 'Lab' },
                 ]
             },
             {
                 day: 'Wednesday', slots: [
-                    { period: 1, span: 1, subject: 'MAT', type: 'Lecture' },
-                    { period: 2, span: 1, subject: 'PHY', type: 'Lecture' },
-                    { period: 3, span: 2, subject: 'MATLAB', type: 'Lab' },
-                    { period: 5, span: 2, subject: 'C-LAB', type: 'Lab' },
+                    { period: 2, span: 1, subject: 'ECE', type: 'Lecture' },
+                    { period: 5, span: 2, subject: 'AIML', type: 'Lab' },
                 ]
             },
             {
                 day: 'Thursday', slots: [
-                    { period: 1, span: 2, subject: 'CADE-T', type: 'Tutorial' },
-                    { period: 3, span: 1, subject: 'MAT', type: 'Lecture' },
-                    { period: 4, span: 1, subject: 'PHY', type: 'Lecture' },
-                    { period: 5, span: 1, subject: 'EC', type: 'Lecture' },
-                    { period: 6, span: 1, subject: 'C', type: 'Lecture' },
+                    { period: 1, span: 2, subject: 'EEE', type: 'Tutorial' },
+                    { period: 4, span: 1, subject: 'ME', type: 'Lecture' },
+                    { period: 5, span: 1, subject: 'CV', type: 'Lecture' },
+                    { period: 6, span: 1, subject: 'CSE', type: 'Lecture' },
                 ]
             },
             {
                 day: 'Friday', slots: [
-                    { period: 1, span: 1, subject: 'C', type: 'Lecture' },
-                    { period: 2, span: 1, subject: 'PHY', type: 'Lecture' },
-                    { period: 3, span: 2, subject: 'CADE-T', type: 'Tutorial' },
-                    { period: 5, span: 1, subject: 'MAT', type: 'Lecture' },
-                    { period: 6, span: 1, subject: 'EC', type: 'Lecture' },
+                    { period: 1, span: 1, subject: 'ECE', type: 'Lecture' },
+                    { period: 2, span: 1, subject: 'AIML', type: 'Lecture' },
+                    { period: 3, span: 2, subject: 'EEE', type: 'Tutorial' },
+                    { period: 6, span: 1, subject: 'ME', type: 'Lecture' },
                 ]
             },
         ],
         exams: [
-            { date: '15/03/2026', subject: 'Mathematics', type: 'Internal 2' },
-            { date: '18/03/2026', subject: 'Physics', type: 'Internal 2' },
+            { date: '15/03/2026', subject: 'CSE', type: 'Internal 2' },
+            { date: '18/03/2026', subject: 'ECE', type: 'Internal 2' },
             { date: '20/04/2026', subject: 'All Subjects', type: 'Semester End Exam' },
+        ]
+    },
+
+    teacherTimetable: {
+        days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+        periods: [1, 2, 3, 4, 5, 6],
+        schedule: [
+            {
+                day: 'Monday', slots: [
+                    { period: 1, span: 1, subject: 'CSE', type: 'Lecture' },
+                    { period: 2, span: 1, subject: 'ECE', type: 'Lecture' },
+                    { period: 5, span: 2, subject: 'AIML', type: 'Lab' },
+                ]
+            },
+            {
+                day: 'Tuesday', slots: [
+                    { period: 3, span: 1, subject: 'EEE', type: 'Lecture' },
+                    { period: 4, span: 1, subject: 'ME', type: 'Lecture' },
+                ]
+            },
+            {
+                day: 'Wednesday', slots: [
+                    { period: 1, span: 1, subject: 'CV', type: 'Lecture' },
+                    { period: 2, span: 1, subject: 'CSE', type: 'Lecture' },
+                    { period: 3, span: 2, subject: 'ECE', type: 'Lab' },
+                ]
+            },
+            {
+                day: 'Thursday', slots: [
+                    { period: 3, span: 1, subject: 'AIML', type: 'Lecture' },
+                    { period: 4, span: 1, subject: 'EEE', type: 'Lecture' },
+                    { period: 5, span: 2, subject: 'ME', type: 'Lab' },
+                ]
+            },
+            {
+                day: 'Friday', slots: [
+                    { period: 1, span: 1, subject: 'CV', type: 'Lecture' },
+                    { period: 2, span: 1, subject: 'CSE', type: 'Lecture' },
+                    { period: 5, span: 2, subject: 'ECE', type: 'Lab' },
+                ]
+            },
+        ],
+        exams: [
+            { date: '15/03/2026', subject: 'CSE', type: 'Internal 2 Evaluation' },
+            { date: '16/03/2026', subject: 'ECE', type: 'Internal 2 Evaluation' },
+            { date: '20/04/2026', subject: 'All Sections', type: 'Semester End Assessment' },
         ]
     },
 
@@ -332,8 +376,8 @@ export const mockBackend = {
 
     // Recorded Lectures
     lectures: [
-        { id: 1, subject: 'Mathematics II', unit: 'Unit 1', title: 'Double & Triple Integrals', teacher: 'Dr. Bhavana', link: '#', duration: '1h 20m', views: 234 },
-        { id: 2, subject: 'Mathematics II', unit: 'Unit 2', title: 'Laplace & Fourier Transforms', teacher: 'Dr. Bhavana', link: '#', duration: '1h 45m', views: 189 },
+        { id: 1, subject: 'Computer Science', unit: 'Unit 1', title: 'Double & Triple Integrals', teacher: 'Dr. Bhavana', link: '#', duration: '1h 20m', views: 234 },
+        { id: 2, subject: 'Computer Science', unit: 'Unit 2', title: 'Laplace & Fourier Transforms', teacher: 'Dr. Bhavana', link: '#', duration: '1h 45m', views: 189 },
         { id: 3, subject: 'Engineering Physics', unit: 'Unit 1', title: 'Quantum Mechanics & Semiconductors', teacher: 'Dr. White', link: '#', duration: '55m', views: 312 },
         { id: 4, subject: 'Engineering Physics', unit: 'Unit 3', title: 'Laser and Optical Fibers', teacher: 'Dr. White', link: '#', duration: '1h 10m', views: 156 },
         { id: 5, subject: 'Data Structures', unit: 'Unit 1', title: 'Stack & Queue Implementations', teacher: 'Prof. Alan', link: '#', duration: '2h 00m', views: 445 },
@@ -341,7 +385,7 @@ export const mockBackend = {
     ],
     // School & Parent Features Data
     homework: [
-        { id: 1, subject: 'Mathematics II', title: 'Laplace Transform Exercises', dueDate: '28/05/2026', status: 'Pending', priority: 'High' },
+        { id: 1, subject: 'Computer Science', title: 'Laplace Transform Exercises', dueDate: '28/05/2026', status: 'Pending', priority: 'High' },
         { id: 2, subject: 'Data Structures', title: 'BST Rotation and Traversal', dueDate: '29/05/2026', status: 'Completed', priority: 'Medium' },
         { id: 3, subject: 'Digital Electronics', title: 'Karnaugh Map Minimization', dueDate: '01/06/2026', status: 'Pending', priority: 'Low' },
     ],
@@ -351,7 +395,7 @@ export const mockBackend = {
             attendance: 92,
             homeworkCompletion: 85,
             recentGrades: [
-                { subject: 'Mathematics II', grade: 'A', date: '20/05/2026' },
+                { subject: 'Computer Science', grade: 'A', date: '20/05/2026' },
                 { subject: 'Data Structures', grade: 'B+', date: '18/05/2026' },
                 { subject: 'Digital Electronics', grade: 'A+', date: '15/05/2026' },
             ],
@@ -383,8 +427,8 @@ export const mockBackend = {
 
     // Semester Analytics
     semesterAnalytics: [
-        { sem: 1, sgpa: 8.5, attendance: 82, studyHours: 120, weakSubjects: ['Basic Electrical'], strongSubjects: ['Mathematics I'] },
-        { sem: 2, sgpa: 8.8, attendance: 88, studyHours: 145, weakSubjects: ['Network Analysis'], strongSubjects: ['Data Structures', 'Mathematics II'] },
+        { sem: 1, sgpa: 8.5, attendance: 82, studyHours: 120, weakSubjects: ['Basic Electrical'], strongSubjects: ['Computer Science I'] },
+        { sem: 2, sgpa: 8.8, attendance: 88, studyHours: 145, weakSubjects: ['Network Analysis'], strongSubjects: ['Data Structures', 'Computer Science'] },
     ],
 
     login: async (email, password) => {
@@ -401,10 +445,10 @@ export const mockBackend = {
     },
 
     teachersDiary: [
-        { id: 1, teacher: 'Dr. Bhavana', subject: 'Mathematics II', date: 'May 22, 2026', remark: 'Excellent performance in the integration test. Keep it up!', type: 'Positive', read: true },
+        { id: 1, teacher: 'Dr. Bhavana', subject: 'Computer Science', date: 'May 22, 2026', remark: 'Excellent performance in the integration test. Keep it up!', type: 'Positive', read: true },
         { id: 2, teacher: 'Prof. Alan', subject: 'Data Structures', date: 'May 20, 2026', remark: 'Arrived 10 minutes late to the laboratory session today.', type: 'Warning', read: true },
         { id: 3, teacher: 'Dr. White', subject: 'Digital Electronics', date: 'May 18, 2026', remark: 'Participated very well in the peer tutoring session. Shows great leadership skills.', type: 'Positive', read: false },
         { id: 4, teacher: 'Admin Office', subject: 'General', date: 'May 15, 2026', remark: 'The schedule for the IEEE technical workshop has been released.', type: 'Info', read: true },
-        { id: 5, teacher: 'Dr. Bhavana', subject: 'Mathematics II', date: 'May 10, 2026', remark: 'Missed submitting the homework for Laplace Transforms. Please check.', type: 'Alert', read: false },
+        { id: 5, teacher: 'Dr. Bhavana', subject: 'Computer Science', date: 'May 10, 2026', remark: 'Missed submitting the homework for Laplace Transforms. Please check.', type: 'Alert', read: false },
     ]
 };
