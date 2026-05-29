@@ -12,6 +12,15 @@ import {
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import './FeatureStyles.css';
 
+const childNameMap = {
+    '00000000-0000-0000-0000-000000000001': 'Bharath Kumar A (bk@vvce)',
+    '00000000-0000-0000-0000-000000000002': 'Ananya Yk (ananya@vvce)',
+    '00000000-0000-0000-0000-000000000003': 'Riddhi (riddhi@vvce)',
+    '00000000-0000-0000-0000-000000000007': 'Rishith (rishith@vvce)',
+    '00000000-0000-0000-0000-000000000008': 'Bharath P (bp@vvce)',
+    '00000000-0000-0000-0000-000000000009': 'Anagha (anagha@vvce)'
+};
+
 const ParentDashboard = () => {
     const { user } = useAuth();
     const supabase = useMemo(() => createClient(), []);
@@ -98,12 +107,7 @@ const ParentDashboard = () => {
                     .eq('id', childId)
                     .single();
                 
-                // If it is bp@vvce, set name
-                if (user.childEmail === 'bp@vvce') {
-                    setChildName('Bharath P (bp@vvce)');
-                } else {
-                    setChildName('Demo Student');
-                }
+                setChildName(childNameMap[childId] || user.childEmail || 'Demo Student');
 
                 // 2. Fetch child attendance
                 const { data: attData } = await supabase
@@ -139,7 +143,7 @@ const ParentDashboard = () => {
                 } else {
                     // Fallback to default timetable
                     setTimetables([
-                        { id: '1', subject: '1BMATE201 - Applied Mathematics - II', day: 'Monday', time: '09:00 AM - 10:00 AM', room: 'L-301' },
+                        { id: '1', subject: '1BCS201 - Introduction to Computer Science', day: 'Monday', time: '09:00 AM - 10:00 AM', room: 'L-301' },
                         { id: '2', subject: '1BPLCO203 - Introduction to C Programming', day: 'Monday', time: '10:15 AM - 11:15 AM', room: 'CS-Lab' },
                         { id: '3', subject: '1BPHYT202 - Applied Physics', day: 'Tuesday', time: '11:30 AM - 12:30 PM', room: 'Physics-Lab' }
                     ]);
@@ -155,7 +159,7 @@ const ParentDashboard = () => {
                 } else {
                     // Fallback
                     setExams([
-                        { id: '1', subject: '1BMATE201 - Applied Mathematics - II', type: 'Internals 1', date: '15-06-2026', time: '10:00 AM' },
+                        { id: '1', subject: '1BCS201 - Introduction to Computer Science', type: 'Internals 1', date: '15-06-2026', time: '10:00 AM' },
                         { id: '2', subject: '1BPLCO203 - Introduction to C Programming', type: 'Final Exam', date: '22-06-2026', time: '02:00 PM' }
                     ]);
                 }
@@ -170,7 +174,7 @@ const ParentDashboard = () => {
                 } else {
                     // Fallback
                     setQuizzes([
-                        { id: '1', subject: '1BMATE201 - Applied Mathematics - II', title: 'Unit Test 1', score: '8', total: '10', date: '12-05-2026' },
+                        { id: '1', subject: '1BCS201 - Introduction to Computer Science', title: 'Unit Test 1', score: '8', total: '10', date: '12-05-2026' },
                         { id: '2', subject: '1BPLCO203 - Introduction to C Programming', title: 'Quiz 1', score: '9', total: '10', date: '19-05-2026' }
                     ]);
                 }

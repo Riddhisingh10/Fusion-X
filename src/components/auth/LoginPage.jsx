@@ -45,19 +45,13 @@ const LoginPage = () => {
         const result = await login(email, password);
 
         if (result.success) {
-            if (loginRole === 'FACULTY') {
-                router.push('/dashboard?view=subject');
-            } else if (loginRole === 'ADVISOR') {
-                router.push('/dashboard?view=advisor');
-            } else if (loginRole === 'PARENT') {
+            if (result.user?.role === 'parent') {
                 router.push('/dashboard/parent-dashboard');
-            } else if (loginRole === 'ADMIN') {
-                router.push('/dashboard');
             } else {
                 router.push('/dashboard');
             }
         } else {
-            setError(result.error);
+            setError(result.error || 'Invalid credentials');
         }
         setLoading(false);
     };

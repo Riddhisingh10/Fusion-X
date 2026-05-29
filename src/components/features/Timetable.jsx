@@ -1,23 +1,18 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import { mockBackend } from '../../services/mockBackend';
+import { useAuth } from '../../context/AuthContext';
 import { AlertTriangle, Calendar, Clock } from 'lucide-react';
 import './FeatureStyles.css';
 
-// Subject → color mapping (matching screenshot vibes)
+// Subject → color mapping (matching branch-wise colors)
 const subjectColors = {
-    'COM SKILLS': '#ff8c00',
-    'PHY LAB': '#00d4ff',
-    'INUNITY': '#ffe600',
-    'EC': '#4d7cff',
-    'CONS': '#a855f7',
-    'C': '#ef4444',
-    'MAT': '#22c55e',
-    'CADE-LAB': '#00d4ff',
-    'PHY': '#94a3b8',
-    'MATLAB': '#4ade80',
-    'C-LAB': '#06b6d4',
-    'CADE-T': '#84cc16',
+    'CSE': '#2563eb',  // Blue
+    'ECE': '#16a34a',  // Green
+    'AIML': '#7c3aed', // Purple
+    'EEE': '#ea580c',  // Orange
+    'ME': '#dc2626',   // Red
+    'CV': '#0d9488',   // Teal
 };
 
 // BREAK and LUNCH letters
@@ -25,8 +20,11 @@ const breakLetters = ['B', 'R', 'E', 'A', 'K'];
 const lunchLetters = ['L', 'U', 'N', 'C', 'H'];
 
 const Timetable = () => {
+    const { user } = useAuth();
     const [activeTab, setActiveTab] = useState('SCHOOL');
-    const { timetable, personalNotes } = mockBackend;
+    const isTeacher = user?.role === 'teacher';
+    const timetable = isTeacher ? mockBackend.teacherTimetable : mockBackend.timetable;
+    const { personalNotes } = mockBackend;
     const [todos, setTodos] = useState(mockBackend.todos);
     const [currentTime, setCurrentTime] = useState(new Date());
 
@@ -65,7 +63,7 @@ const Timetable = () => {
     };
 
     return (
-        <div className="timetable-container animate-enter" style={{ padding: '2rem 1rem', maxWidth: '100%' }}>
+        <div className="timetable-container animate-enter" style={{ padding: '2rem 1rem', maxWidth: '100%', height: 'auto', overflow: 'visible' }}>
             {/* Tab Launcher Bar */}
             <div className="tt-tab-bar" style={{
                 display: 'flex',
@@ -118,6 +116,9 @@ const Timetable = () => {
 
             {activeTab === 'SCHOOL' && (
                 <>
+                    <h3 style={{ marginBottom: '1.25rem', color: '#ff9800', fontSize: '1.2rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '1px' }}>
+                        {isTeacher ? `Dr. Bhavana's Work Schedule` : 'Second Semester Student Timetable'}
+                    </h3>
                     {/* Excel-like Table */}
                     <div className="tt-table-wrapper">
                         <table className="tt-excel-table">
@@ -158,8 +159,16 @@ const Timetable = () => {
                                                     </td>
                                                 );
                                             } else {
-                                                const bgColor = subjectColors[slot.subject] || '#666';
-                                                const textColor = ['#ffe600', '#4ade80', '#84cc16', '#22c55e', '#fbbf24'].includes(bgColor) ? '#000' : '#fff';
+                                                let bgColor = '#666';
+                                                const subName = slot.subject.toUpperCase();
+                                                const matchedKey = Object.keys(subjectColors).find(key => subName.includes(key));
+                                                if (matchedKey) {
+                                                    bgColor = subjectColors[matchedKey];
+                                                } else {
+                                                    bgColor = subjectColors[slot.subject] || '#666';
+                                                }
+
+                                                const textColor = '#fff';
                                                 cells.push(
                                                     <td
                                                         key={p}
@@ -174,7 +183,6 @@ const Timetable = () => {
                                                             }}
                                                         >
                                                             <span className="tt-subject-name">{slot.subject}</span>
-                                                            <span className="tt-subject-type">{slot.type}</span>
                                                         </div>
                                                     </td>
                                                 );
@@ -221,6 +229,9 @@ const Timetable = () => {
                             width: 100%;
                             padding: 0.5rem 0 !important;
                             max-width: none !important;
+                            height: auto !important;
+                            overflow: visible !important;
+                            display: block !important;
                         }
                         .tt-table-wrapper {
                             margin: 0;
@@ -238,8 +249,22 @@ const Timetable = () => {
                             background: var(--bg-card) !important;
                             color: var(--text-primary) !important;
                             border: 1px solid var(--border-color) !important;
+                        .tt-corner-header, .tt-period-header {
+                            background: #111 !important;
+                            color: #fff !important;
+                            border: 1px solid #333 !important;
                             padding: 6px 2px !important;
                             font-size: 0.75rem;
+                        }
+                        .tt-day-cell {
+                            background: #111 !important;
+                            color: #fff !important;
+                            border: 1px solid #333 !important;
+                            padding: 6px 2px !important;
+                            font-size: 0.85rem;
+                            vertical-align: middle !important;
+                            text-align: center !important;
+                            height: 50px;
                         }
                         .tt-period-header {
                             background: #fbbf24 !important;
@@ -250,6 +275,8 @@ const Timetable = () => {
                         .tt-cell {
                             height: 48px; /* Ultra-compact for single page */
                             border: 1px solid var(--border-color) !important;
+                            height: 50px; /* Vertically small cells */
+                            border: 1px solid #333 !important;
                         }
                         .tt-subject-cell {
                             height: 100%;
@@ -258,18 +285,21 @@ const Timetable = () => {
                             justify-content: center;
                             align-items: center;
                             text-align: center;
-                            padding: 1px;
+                            padding: 4px;
                             font-weight: 800;
                         }
                         .tt-subject-name {
-                            font-size: 0.7rem;
-                            letter-spacing: -0.2px;
-                            line-height: 1;
+                            font-size: 1.1rem; /* Compact font size for small cell */
+                            letter-spacing: 0.5px;
+                            line-height: 1.2;
                         }
-                        .tt-subject-type {
-                            font-size: 0.5rem;
-                            opacity: 0.8;
-                            text-transform: uppercase;
+                        .tt-empty {
+                            vertical-align: middle !important;
+                            text-align: center !important;
+                        }
+                        .tt-empty-dash {
+                            font-size: 1.1rem;
+                            color: #444;
                         }
                         .tt-separator-cell {
                             background: var(--bg-secondary) !important;
@@ -278,6 +308,10 @@ const Timetable = () => {
                             width: 20px;
                             border: 1px solid var(--border-color) !important;
                             font-size: 0.65rem;
+                            border: 1px solid #333 !important;
+                            font-size: 0.85rem;
+                            vertical-align: middle !important;
+                            text-align: center !important;
                         }
                         .tt-legend {
                             display: flex;

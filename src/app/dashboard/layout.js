@@ -32,10 +32,16 @@ const DashboardLayout = ({ children }) => {
     const currentView = searchParams ? searchParams.get('view') : null;
 
     React.useEffect(() => {
-        if (!loading && !user) {
-            router.push('/login');
+        if (!loading) {
+            if (!user) {
+                router.push('/login');
+            } else if (user.role === 'parent' && pathname === '/dashboard') {
+                router.push('/dashboard/parent-dashboard');
+            } else if (user.role !== 'parent' && pathname.startsWith('/dashboard/parent-dashboard')) {
+                router.push('/dashboard');
+            }
         }
-    }, [user, loading, router]);
+    }, [user, loading, router, pathname]);
 
     React.useEffect(() => {
         if (loading || !user) return;
