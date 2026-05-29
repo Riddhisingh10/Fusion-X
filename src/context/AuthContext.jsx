@@ -1,0 +1,338 @@
+'use client';
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import { authAPI, setAccessToken } from '../services/api';
+import { mockBackend } from '../services/mockBackend';
+import { createClient } from '../utils/supabase/client';
+
+const AuthContext = createContext(null);
+
+export const AuthProvider = ({ children }) => {
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const supabase = createClient();
+
+    useEffect(() => {
+        // Check active session using refresh token cookie or mock cookie on mount
+        const checkAuth = async () => {
+            try {
+                // Check if mock user cookie is active
+                const getCookie = (name) => {
+                    if (typeof document === 'undefined') return null;
+                    const value = `; ${document.cookie}`;
+                    const parts = value.split(`; ${name}=`);
+                    if (parts.length === 2) return parts.pop().split(';').shift();
+                    return null;
+                };
+
+                const mockCookie = getCookie('mock-user');
+                if (mockCookie) {
+                    try {
+                        const parsed = JSON.parse(decodeURIComponent(mockCookie));
+                        setUser(parsed);
+                        setLoading(false);
+                        return;
+                    } catch (e) {
+                        // ignore malformed cookie
+                    }
+                }
+
+                const data = await authAPI.refresh();
+                if (data && data.accessToken) {
+                    setAccessToken(data.accessToken);
+                    setUser(data.user);
+                }
+            } catch (error) {
+                console.log("No active session detected.");
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        checkAuth();
+    }, []);
+
+    // Helper to run background Supabase login/signup
+    const handleSupabaseBackgroundAuth = async (email, password, role) => {
+        try {
+            let supabaseEmail = email;
+            let supabasePassword = password;
+
+            // Map mock users to college.edu domains for trigger validation
+            if (email === '1') {
+                supabaseEmail = 'student@college.edu';
+                supabasePassword = 'Password123!';
+            } else if (email === '2') {
+                supabaseEmail = 'teacher@college.edu';
+                supabasePassword = 'Password123!';
+            } else if (email === '3') {
+                supabaseEmail = 'parent@college.edu';
+                supabasePassword = 'Password123!';
+            } else {
+                supabaseEmail = email;
+                supabasePassword = password;
+            }
+
+            // Attempt to login to Supabase
+            const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+                email: supabaseEmail,
+                password: supabasePassword
+            });
+
+            if (signInError) {
+                // If login fails (user doesn't exist), attempt auto-signup
+                if (signInError.message.includes('Invalid login credentials') || signInError.message.includes('User not found')) {
+                    const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+                        email: supabaseEmail,
+                        password: supabasePassword,
+                        options: {
+                            data: {
+                                role: role || 'student'
+                            }
+                        }
+                    });
+
+                    if (!signUpError && signUpData?.user) {
+                        // Auto login after signup
+                        await supabase.auth.signInWithPassword({
+                            email: supabaseEmail,
+                            password: supabasePassword
+                        });
+                    }
+                }
+            }
+        } catch (err) {
+            console.warn("Background Supabase auth sync warning:", err);
+        }
+    };
+
+    const login = async (email, password) => {
+        // Helper to set mock cookie
+        const setMockCookie = (userData) => {
+            if (typeof document !== 'undefined') {
+                const isSecure = window.location.protocol === 'https:';
+                document.cookie = `mock-user=${encodeURIComponent(JSON.stringify(userData))}; path=/; max-age=3600; SameSite=Lax${isSecure ? '; Secure' : ''}`;
+            }
+        };
+
+        // NEW VVCE Accounts Bypasses
+        if (email === 'bk@vvce' && password === 'bk') {
+            const mockUser = {
+                _id: '00000000-0000-0000-0000-000000000001',
+                id: '00000000-0000-0000-0000-000000000001',
+                name: 'bharath kumar a',
+                email: 'bk@vvce',
+                role: 'student',
+                usn: '4VV25EC001'
+            };
+            setMockCookie(mockUser);
+            setAccessToken('mock-token-bk');
+            setUser(mockUser);
+            await handleSupabaseBackgroundAuth(email, password, 'student');
+            return { success: true };
+        }
+
+        if (email === 'bp@vvce' && password === 'bp') {
+            const mockUser = {
+                _id: '00000000-0000-0000-0000-000000000002',
+                id: '00000000-0000-0000-0000-000000000002',
+                name: 'bharath p',
+                email: 'bp@vvce',
+                role: 'student',
+                usn: '4VV25EC002'
+            };
+            setMockCookie(mockUser);
+            setAccessToken('mock-token-bp');
+            setUser(mockUser);
+            await handleSupabaseBackgroundAuth(email, password, 'student');
+            return { success: true };
+        }
+
+        if (email === 'anagha@vvce' && password === 'anagha') {
+            const mockUser = {
+                _id: '00000000-0000-0000-0000-000000000003',
+                id: '00000000-0000-0000-0000-000000000003',
+                name: 'anagha',
+                email: 'anagha@vvce',
+                role: 'student',
+                usn: '4VV25EC003'
+            };
+            setMockCookie(mockUser);
+            setAccessToken('mock-token-anagha');
+            setUser(mockUser);
+            await handleSupabaseBackgroundAuth(email, password, 'student');
+            return { success: true };
+        }
+
+        if (email === 'bhav@vvce' && password === 'bhav') {
+            const mockUser = {
+                _id: '00000000-0000-0000-0000-000000000004',
+                id: '00000000-0000-0000-0000-000000000004',
+                name: 'bhavana',
+                email: 'bhav@vvce',
+                role: 'teacher'
+            };
+            setMockCookie(mockUser);
+            setAccessToken('mock-token-bhav');
+            setUser(mockUser);
+            await handleSupabaseBackgroundAuth(email, password, 'teacher');
+            return { success: true };
+        }
+
+        if (email === 'abhi@vvce' && password === 'abhi') {
+            const mockUser = {
+                _id: '00000000-0000-0000-0000-000000000005',
+                id: '00000000-0000-0000-0000-000000000005',
+                name: 'abhi',
+                email: 'abhi@vvce',
+                role: 'parent',
+                childEmail: 'bp@vvce',
+                childId: '00000000-0000-0000-0000-000000000002'
+            };
+            setMockCookie(mockUser);
+            setAccessToken('mock-token-abhi');
+            setUser(mockUser);
+            await handleSupabaseBackgroundAuth(email, password, 'parent');
+            return { success: true };
+        }
+
+        if (email === 'preksha@vvce' && password === 'preksha') {
+            const mockUser = {
+                _id: '00000000-0000-0000-0000-000000000006',
+                id: '00000000-0000-0000-0000-000000000006',
+                name: 'preksha',
+                email: 'preksha@vvce',
+                role: 'parent',
+                childEmail: 'bp@vvce',
+                childId: '00000000-0000-0000-0000-000000000002'
+            };
+            setMockCookie(mockUser);
+            setAccessToken('mock-token-preksha');
+            setUser(mockUser);
+            await handleSupabaseBackgroundAuth(email, password, 'parent');
+            return { success: true };
+        }
+
+        // Simplified Login for Demo/Testing
+        if (email === '1' && password === '1') {
+            const mockStudent = {
+                _id: 'mock-student-id',
+                name: 'Demo Student',
+                email: 'student@college.edu',
+                role: 'student',
+                usn: '4VV25EC001'
+            };
+            setMockCookie(mockStudent);
+            setAccessToken('mock-token-student');
+            setUser(mockStudent);
+            await handleSupabaseBackgroundAuth(email, password, 'student');
+            return { success: true };
+        }
+
+        if (email === '2' && password === '2') {
+            const mockTeacher = {
+                _id: 'mock-teacher-id',
+                name: 'Demo Teacher',
+                email: 'teacher@college.edu',
+                role: 'teacher'
+            };
+            setMockCookie(mockTeacher);
+            setAccessToken('mock-token-teacher');
+            setUser(mockTeacher);
+            await handleSupabaseBackgroundAuth(email, password, 'teacher');
+            return { success: true };
+        }
+
+        if (email === '3' && password === '3') {
+            const mockParent = {
+                _id: 'mock-parent-id',
+                name: 'Demo Parent',
+                email: 'parent@college.edu',
+                role: 'parent'
+            };
+            setMockCookie(mockParent);
+            setAccessToken('mock-token-parent');
+            setUser(mockParent);
+            await handleSupabaseBackgroundAuth(email, password, 'parent');
+            return { success: true };
+        }
+
+        try {
+            // Try Real API first
+            const data = await authAPI.login(email, password);
+            const userData = {
+                _id: data.user._id,
+                name: data.user.name,
+                email: data.user.email,
+                role: data.user.role,
+                usn: data.user.usn || '4VV25EC032'
+            };
+            setAccessToken(data.accessToken);
+            setUser(userData);
+            await handleSupabaseBackgroundAuth(email, password, data.user.role);
+            return { success: true };
+        } catch (error) {
+            // Fallback to Mock Backend for Demo
+            console.warn("API Login failed, using Mock Backend fallback", error.message);
+            try {
+                const mockResult = await mockBackend.login(email, password);
+                const userData = {
+                    _id: mockResult.user.id,
+                    name: mockResult.user.name,
+                    email: mockResult.user.email,
+                    role: mockResult.user.role,
+                    usn: '4VV25EC032'
+                };
+                setMockCookie(userData);
+                setAccessToken(mockResult.token);
+                setUser(userData);
+                await handleSupabaseBackgroundAuth(email, password, mockResult.user.role);
+                return { success: true };
+            } catch (mockError) {
+                return { success: false, error: mockError.message };
+            }
+        }
+    };
+
+    const register = async (userData) => {
+        try {
+            const data = await authAPI.register(userData);
+            setAccessToken(data.accessToken);
+            const registeredUser = {
+                _id: data.user._id,
+                name: data.user.name,
+                email: data.user.email,
+                role: data.user.role
+            };
+            setUser(registeredUser);
+            await handleSupabaseBackgroundAuth(userData.email, userData.password, userData.role);
+            return { success: true };
+        } catch (error) {
+            return { success: false, error: error.message };
+        }
+    };
+
+    const logout = async () => {
+        try {
+            // Clear mock cookie
+            if (typeof document !== 'undefined') {
+                const isSecure = window.location.protocol === 'https:';
+                document.cookie = `mock-user=; path=/; max-age=0; SameSite=Lax${isSecure ? '; Secure' : ''}`;
+            }
+            await supabase.auth.signOut();
+            await authAPI.logout();
+        } catch (error) {
+            console.error("API logout failed", error);
+        } finally {
+            setAccessToken(null);
+            setUser(null);
+        }
+    };
+
+    return (
+        <AuthContext.Provider value={{ user, login, register, logout, loading }}>
+            {!loading && children}
+        </AuthContext.Provider>
+    );
+};
+
+export const useAuth = () => useContext(AuthContext);

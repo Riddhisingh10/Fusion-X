@@ -1,0 +1,228 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+:root {
+  /* Premium Pitch Black SaaS Palette */
+  --bg-primary: #09090b; /* Rich near-black */
+  --bg-secondary: #18181b; /* Zinc dark gray */
+  --bg-app-background: #000000; /* Pitch black backdrop */
+  
+  --border-color: #27272a; /* Subtle zinc border */
+  --border-width: 1px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+
+  /* Subtle Dark Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.7);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.8), 0 2px 4px -1px rgba(0, 0, 0, 0.8);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.9);
+  
+  /* Mapped names */
+  --shadow-hard: var(--shadow-md);
+  --shadow-hover: var(--shadow-lg);
+
+  /* Professional Accents */
+  --accent-primary: #818cf8; /* Indigo/Violet */
+  --accent-secondary: #c084fc; /* Purple */
+  --accent-action: #fbbf24; /* Amber */
+  --success: #34d399;
+  --error: #fb7185;
+
+  --text-primary: #fafafa; /* Pure off-white */
+  --text-secondary: #a1a1aa; /* Zinc muted gray */
+  --text-inverse: #09090b;
+
+  --sidebar-bg: #09090b;
+  --sidebar-text: #a1a1aa;
+  --sidebar-active: #ffffff;
+
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  line-height: 1.5;
+  color: var(--text-primary);
+  --bg-card: var(--bg-secondary);
+  background-color: var(--bg-app-background);
+  font-size: 100%;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+:root[data-theme="light"] {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f3f4f6;
+  --bg-app-background: #f9fafb;
+  --border-color: #e5e7eb;
+  --text-primary: #111827;
+  --text-secondary: #4b5563;
+  --bg-card: var(--bg-primary);
+  --shadow-hard: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  /* Dot Matrix Pattern */
+  background: var(--bg-app-background);
+  background-size: 24px 24px;
+  color: var(--text-primary);
+  /* Better mobile touch handling */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Prevent horizontal scroll on mobile */
+#root {
+  overflow-x: hidden;
+  width: 100%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Scrollbar */
+/* Global Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Utility Classes for Animations */
+.animate-enter {
+  animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  opacity: 0;
+  /* Starte hidden */
+}
+
+.animate-scale {
+  animation: scaleIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  opacity: 0;
+}
+
+/* Stagger Delays */
+.delay-100 {
+  animation-delay: 100ms;
+}
+
+.delay-200 {
+  animation-delay: 200ms;
+}
+
+.delay-300 {
+  animation-delay: 300ms;
+}
+
+.delay-400 {
+  animation-delay: 400ms;
+}
+
+.delay-500 {
+  animation-delay: 500ms;
+}
+
+/* Refined Button Interactions */
+button:active {
+  transform: translate(2px, 2px);
+  /* Reduce shadow on press for tactile feel */
+  box-shadow: 2px 2px 0px var(--shadow-hard) !important;
+}
+
+/* Smooth Transitions */
+a,
+button,
+.card,
+.stat-card,
+.short-card,
+input {
+  transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.fade-in {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+/* Scrollbar Polish */
+::-webkit-scrollbar {
+  width: 8px;
+  background: var(--bg-primary);
+  border-left: 2px solid var(--border-color);
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--text-primary);
+  border: 2px solid var(--bg-primary);
+  border-radius: 0;
+  /* Square thumb for brutalist look */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+/* ==================== MOBILE BASE STYLES ==================== */
+@media (max-width: 768px) {
+  /* Hide scrollbar on mobile WebKit */
+  ::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
+  }
+
+  /* Touch-friendly button active states */
+  button:active {
+    transform: scale(0.97);
+    box-shadow: none !important;
+  }
+
+  /* Smooth scrolling everywhere */
+  * {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Prevent content from going offscreen */
+  body {
+    overflow-x: hidden;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    font-size: 95%;
+  }
+}

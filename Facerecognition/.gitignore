@@ -1,0 +1,6 @@
+dataset/
+__pycache__/
+.DS_Store
+trainer/encodings.pickle
+trainer/trainer.yml
+

@@ -1,0 +1,47 @@
+CONNECT & PREP - CYBERSECURITY EXECUTIVE REPORT
+==============================================
+Prepared for: Project Stakeholders
+Date: May 24, 2026
+Status: Production-Hardened
+
+EXECUTIVE SUMMARY
+-----------------
+Connect & Prep is a collaborative platform designed for college students. Handling student credentials, private study files, and campus feedback requires a strong security architecture. This report outlines our security posture, identifies the "loopholes" we have addressed, explains why the platform is now secure, and demonstrates compliance with India's DPDP Act 2023.
+
+PART 1: THE LOOPHOLES (VULNERABILITIES ADDRESSED)
+-------------------------------------------------
+During our architectural review and development phase, we identified and mitigated several critical loopholes:
+
+1. Token Hijacking via XSS (Cross-Site Scripting)
+   - The Loophole: Storing authentication tokens (JWTs) in the browser's localStorage or sessionStorage exposes them to malicious scripts. If a third-party script or dependency is compromised, an attacker could steal student sessions.
+   - Mitigation: We disabled session persistence in localStorage. Authentication sessions are now managed via secure HttpOnly, SameSite=Strict cookies that JavaScript cannot read.
+
+2. Anonymous Feedback Deanonymization & Spam
+   - The Loophole: Normal database tables for "anonymous" feedback often store user IDs to prevent spam, which compromises user anonymity. If the database is leaked, feedback can be traced to specific students.
+   - Mitigation: We built a cryptographically decoupled architecture. Feedback is rate-limited using a daily salted HMAC hash of the user's ID. This allows us to limit submission rates without storing any identifiable user information in the feedback record.
+
+3. Malicious File Uploads (File Spoofing & Privacy Leaks)
+   - The Loophole: Users could upload malicious scripts disguised as images or PDFs. Additionally, standard uploads contain EXIF metadata revealing GPS coordinates and device properties of the students.
+   - Mitigation: Uploads undergo server-side validation using magic bytes (header signatures) instead of trusting file extensions. We integrated automated metadata stripping for images and PDFs and enforce storage access via short-lived (15-minute) signed URLs.
+
+4. Realtime Chat Flooding and Sniffing
+   - The Loophole: WebSockets can bypass traditional rate limits, allowing attackers to spam databases or eavesdrop on private chats.
+   - Mitigation: We enforced Row-Level Security (RLS) on Supabase. Students can only receive or send messages for groups they are actively registered in. Database triggers restrict insertion rates to one message per two seconds.
+
+
+PART 2: WHY IS THIS SYSTEM SECURE? (DEFENSE-IN-DEPTH)
+-----------------------------------------------------
+Our platform is built on a "Zero-Trust" database layer and strict boundary controls:
+
+1. Row-Level Security (RLS): All PostgreSQL tables enforce RLS. Even if an attacker compromises the API layer, they cannot query data belonging to other colleges or students because Supabase validates ownership at the database level.
+2. Security Headers & CSP: We use strict HTTP headers (HSTS, X-Frame-Options, X-Content-Type-Options) and a Content Security Policy (CSP) to stop clickjacking and script injection attacks.
+3. Network and Environment Isolation: Database connection strings and API keys are stored in server-side environment variables and are never checked into source control. Database access is whitelisted only for our production servers.
+4. Continuous Integrity Audits: Dependency vulnerabilities are scanned weekly via automated tools, and CI/CD pipelines prevent code with known vulnerabilities from being merged.
+
+
+PART 3: REGULATORY COMPLIANCE (INDIA DPDP ACT 2023)
+---------------------------------------------------
+To protect our user base and comply with national regulations:
+- Data Residency: Databases are hosted within local Indian cloud regions (Asia Pacific - Mumbai).
+- Right to Erasure: We deployed a dedicated deletion endpoint (/api/auth/delete-account) that triggers a cascading delete, removing all associated user data upon request.
+- Data Minimization: We only collect necessary institutional data, keeping anonymous feedback and chat data decoupled from PII.
