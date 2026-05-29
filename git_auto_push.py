@@ -91,7 +91,7 @@ def get_commit_message(filepath):
 
 def main():
     print("=" * 60)
-    print("  🚀 CONNECT & PREP - MULTI-COMMIT GIT CONTRIBUTOR SCRIPT")
+    print("  [START] CONNECT & PREP - MULTI-COMMIT GIT CONTRIBUTOR SCRIPT")
     print("=" * 60)
     
     # Get current branch
@@ -103,24 +103,22 @@ def main():
     files_to_commit = get_git_status_files()
     
     if not files_to_commit:
-        print("✅ No changed or modified files detected. Git status is clean!")
+        print("[SUCCESS] No changed or modified files detected. Git status is clean!")
         return
         
-    print(f"📦 Detected {len(files_to_commit)} modified or untracked files.")
+    print(f"[STATUS] Detected {len(files_to_commit)} modified or untracked files.")
     print("------------------------------------------------------------")
     for idx, f in enumerate(files_to_commit, 1):
         print(f"  {idx}. {f} -> '{get_commit_message(f)}'")
     print("------------------------------------------------------------")
     
-    response = input("⚠️ Do you want to commit and push all these files individually? (yes/no): ").strip().lower()
-    if response not in ['y', 'yes']:
-        print("❌ Canceled by user request.")
-        return
+    # Fully automated mode: Proceed with committing and pushing files individually
+    print("[INIT] Automated Git Commit Sequence Initiated: Committing and pushing files individually...")
 
     success_count = 0
     for idx, file in enumerate(files_to_commit, 1):
         if not os.path.exists(file):
-            print(f"⏭️ Skipping deleted file (git delete will be staged naturally): {file}")
+            print(f"[SKIP] Skipping deleted file (git delete will be staged naturally): {file}")
             continue
             
         msg = get_commit_message(file)
@@ -132,17 +130,17 @@ def main():
             # 2. Commit the staged file
             subprocess.run(['git', 'commit', '-m', msg], check=True)
             # 3. Push to remote origin
-            print(f"📤 Pushing commit for {file} to remote branch '{branch}'...")
+            print(f"[PUSH] Pushing commit for {file} to remote branch '{branch}'...")
             subprocess.run(['git', 'push', 'origin', branch], check=True)
-            print(f"✅ Successfully committed and pushed: {file}")
+            print(f"[SUCCESS] Successfully committed and pushed: {file}")
             success_count += 1
         except subprocess.CalledProcessError as err:
-            print(f"❌ Failed to process {file}: {err}")
+            print(f"[ERROR] Failed to process {file}: {err}")
             continue
             
     print("\n" + "=" * 60)
-    print(f"🎉 Completed! Successfully committed and pushed {success_count} files individually.")
-    print("📊 Your Git contribution graph has been enriched with distinct commits!")
+    print(f"[COMPLETE] Completed! Successfully committed and pushed {success_count} files individually.")
+    print("[STATUS] Your Git contribution graph has been enriched with distinct commits!")
     print("=" * 60)
 
 if __name__ == '__main__':
