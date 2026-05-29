@@ -7,15 +7,13 @@ export const mockBackend = {
         { id: 'mock-parent-id', name: 'Demo Parent', email: '3', role: 'parent', password: '3' },
 
         // Requested VVCE Accounts
-        { id: '00000000-0000-0000-0000-000000000001', name: 'bharath kumar a', email: 'bk@vvce', role: 'student', password: 'bk', usn: '032' },
-        { id: '00000000-0000-0000-0000-000000000002', name: 'ananya yk', email: 'ananya@vvce', role: 'student', password: 'ananya', usn: '012' },
-        { id: '00000000-0000-0000-0000-000000000003', name: 'riddhi', email: 'riddhi@vvce', role: 'student', password: 'riddhi', usn: '099' },
-        { id: '00000000-0000-0000-0000-000000000007', name: 'rishith', email: 'rishith@vvce', role: 'student', password: 'rishith', usn: '089' },
-        { id: '00000000-0000-0000-0000-000000000008', name: 'bharath p', email: 'bp@vvce', role: 'student', password: 'bp', usn: '008' },
-        { id: '00000000-0000-0000-0000-000000000009', name: 'anagha', email: 'anagha@vvce', role: 'student', password: 'anagha', usn: '003' },
-        { id: '00000000-0000-0000-0000-000000000004', name: 'bhavana', email: 'bhav@vvce', role: 'teacher', password: 'bhav', subject: '1BCS201 - Introduction to Computer Science' },
-        { id: '00000000-0000-0000-0000-000000000005', name: 'abhi', email: 'abhi@vvce', role: 'parent', password: 'abhi', childEmail: 'ananya@vvce', childId: '00000000-0000-0000-0000-000000000002' },
-        { id: '00000000-0000-0000-0000-000000000006', name: 'preksha', email: 'preksha@vvce', role: 'parent', password: 'preksha', childEmail: 'ananya@vvce', childId: '00000000-0000-0000-0000-000000000002' }
+        { id: '00000000-0000-0000-0000-000000000001', name: 'bharath kumar a', email: 'bk@vvce', role: 'student', password: 'bk', usn: '4VV25EC001' },
+        { id: '00000000-0000-0000-0000-000000000002', name: 'bharath p', email: 'bp@vvce', role: 'student', password: 'bp', usn: '4VV25EC002' },
+        { id: '00000000-0000-0000-0000-000000000003', name: 'anagha', email: 'anagha@vvce', role: 'student', password: 'anagha', usn: '4VV25EC003' },
+        { id: '00000000-0000-0000-0000-000000000004', name: 'bhavana', email: 'bhav@vvce', role: 'teacher', password: 'bhav', subject: '1BMATE201 - Applied Mathematics - II for EE Stream' },
+        { id: '00000000-0000-0000-0000-000000000005', name: 'abhi', email: 'abhi@vvce', role: 'parent', password: 'abhi', childEmail: 'bp@vvce', childId: '00000000-0000-0000-0000-000000000002' },
+        { id: '00000000-0000-0000-0000-000000000006', name: 'preksha', email: 'preksha@vvce', role: 'parent', password: 'preksha', childEmail: 'bp@vvce', childId: '00000000-0000-0000-0000-000000000002' },
+        { id: '00000000-0000-0000-0000-000000000007', name: 'Dean Admin', email: 'admin@vvce', role: 'admin', password: 'admin' }
     ],
 
     schoolSubjects: ['Mathematics', 'Science', 'Social Studies', 'English', 'Computer Science', 'Art', 'Physical Education'],

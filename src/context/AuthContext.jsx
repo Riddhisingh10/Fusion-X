@@ -67,6 +67,9 @@ export const AuthProvider = ({ children }) => {
             } else if (email === '3') {
                 supabaseEmail = 'parent@college.edu';
                 supabasePassword = 'Password123!';
+            } else if (email === '4' || email === 'admin') {
+                supabaseEmail = 'admin@college.edu';
+                supabasePassword = 'Password123!';
             } else {
                 supabaseEmail = email;
                 supabasePassword = password;
@@ -105,7 +108,10 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    const login = async (email, password) => {
+    const login = async (rawEmail, rawPassword) => {
+        const email = (rawEmail || '').trim();
+        const password = (rawPassword || '').trim();
+
         // Helper to set mock cookie
         const setMockCookie = (userData) => {
             if (typeof document !== 'undefined') {
@@ -293,6 +299,21 @@ export const AuthProvider = ({ children }) => {
             return { success: true, user: mockParent };
         }
 
+        if ((email === 'admin@vvce' && password === 'admin') || (email === 'admin' && password === 'admin') || (email === '4' && password === '4')) {
+            const mockAdmin = {
+                _id: '00000000-0000-0000-0000-000000000007',
+                id: '00000000-0000-0000-0000-000000000007',
+                name: 'Dean Admin',
+                email: 'admin@vvce',
+                role: 'admin'
+            };
+            setMockCookie(mockAdmin);
+            setAccessToken('mock-token-admin');
+            setUser(mockAdmin);
+            await handleSupabaseBackgroundAuth(email, password, 'admin');
+            return { success: true };
+        }
+
         try {
             // Try Real API first
             const data = await authAPI.login(cleanEmail, cleanPassword);
@@ -358,7 +379,7 @@ export const AuthProvider = ({ children }) => {
             await supabase.auth.signOut();
             await authAPI.logout();
         } catch (error) {
-            console.error("API logout failed", error);
+            console.warn("API logout handled or bypassed:", error.message || error);
         } finally {
             setAccessToken(null);
             setUser(null);

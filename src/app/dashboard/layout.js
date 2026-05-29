@@ -11,7 +11,8 @@ import {
     UserCheck, Timer, Bell, Sun, Moon, Target, Trophy, Briefcase,
     Pencil, Clock, Hash, BrainCircuit, Calculator, Activity,
     Flame, StickyNote, CheckCircle2, Shield, GitBranch, ClipboardList,
-    Home, Wallet, ShieldAlert, TrendingUp, BookOpenCheck, Search, Sparkles
+    Home, Wallet, ShieldAlert, TrendingUp, BookOpenCheck, Search, Sparkles, Sliders,
+    Zap, MapPin, Radio
 } from 'lucide-react';
 import '../../components/layout/DashboardLayout.css';
 import AIChatWidget from '../../components/layout/AIChatWidget';
@@ -128,6 +129,7 @@ const DashboardLayout = ({ children }) => {
         { label: 'Answer Analysis', icon: <BarChart2 size={20} />, path: '/dashboard/analysis' },
         { label: 'Project Hub', icon: <GitBranch size={20} />, path: '/dashboard/projects' },
         { label: 'Prepcare', icon: <Sparkles size={20} />, path: '/dashboard/ai-bot' },
+        { label: 'Clubs Hub', icon: <Trophy size={20} />, path: '/dashboard/clubs' },
         { type: 'divider' },
         { label: 'Leaderboard & XP', icon: <Trophy size={20} />, path: '/dashboard/leaderboard' },
         { label: 'Activity Feed', icon: <Activity size={20} />, path: '/dashboard/feed' },
@@ -148,6 +150,7 @@ const DashboardLayout = ({ children }) => {
         { label: 'Safety Monitor', icon: <ShieldAlert size={20} />, path: '/dashboard/safety' },
         { label: 'Teacher\'s Diary', icon: <BookOpenCheck size={20} />, path: '/dashboard/teachers-diary' },
         { label: 'Smart Exam Predictor', icon: <BrainCircuit size={20} />, path: '/dashboard/predictor' },
+        { label: 'Clubs Hub', icon: <Trophy size={20} />, path: '/dashboard/clubs' },
     ];
 
     const teacherNav = [
@@ -161,6 +164,7 @@ const DashboardLayout = ({ children }) => {
         { label: 'Discussion Forum', icon: <Hash size={20} />, path: '/dashboard/chat' },
         { label: 'Answer Analysis', icon: <BarChart2 size={20} />, path: '/dashboard/analysis' },
         { label: 'Project Hub', icon: <GitBranch size={20} />, path: '/dashboard/projects' },
+        { label: 'Clubs Hub', icon: <Trophy size={20} />, path: '/dashboard/clubs' },
         { type: 'divider' },
         { label: 'Teacher\'s Diary', icon: <BookOpenCheck size={20} />, path: '/dashboard/teachers-diary' },
         { label: 'Paper Generator', icon: <ClipboardList size={20} />, path: '/dashboard/paper-generator' },
@@ -168,10 +172,15 @@ const DashboardLayout = ({ children }) => {
     ];
 
     const adminNav = [
-        { label: 'Dashboard', icon: <Layout size={20} />, path: '/dashboard' },
-        { label: 'Attendance Audit', icon: <Calendar size={20} />, path: '/dashboard/attendance' },
-        { label: 'Project Hub', icon: <GitBranch size={20} />, path: '/dashboard/projects' },
-        { label: 'Complaint Desk', icon: <Shield size={20} />, path: '/dashboard/complaints' },
+        { label: 'System Control Tower', icon: <Layout size={20} />, path: '/dashboard' },
+        { label: 'AI Footfall & Proxy-Risk Audit', icon: <Calendar size={20} />, path: '/dashboard/attendance' },
+        { label: 'Tech & Innovation Registry', icon: <GitBranch size={20} />, path: '/dashboard/projects' },
+        { label: 'Escalation Desk', icon: <Shield size={20} />, path: '/dashboard/complaints' },
+        { type: 'divider' },
+        { label: 'VVCE Microgrid Optimizer', icon: <Zap size={20} />, path: '/dashboard/microgrid' },
+        { label: 'Telemetry & Sensor Map', icon: <MapPin size={20} />, path: '/dashboard/telemetry' },
+        { label: 'System Rules Configuration', icon: <Sliders size={20} />, path: '/dashboard/rules-config' },
+        { label: 'Global Broadcast Tower', icon: <Radio size={20} />, path: '/dashboard/broadcast' },
     ];
 
     const navItems = user?.role === 'parent' 
