@@ -24,9 +24,13 @@ const LoginPage = () => {
         const result = await login(email, password);
 
         if (result.success) {
-            router.push('/dashboard');
+            if (result.user?.role === 'parent') {
+                router.push('/dashboard/parent-dashboard');
+            } else {
+                router.push('/dashboard');
+            }
         } else {
-            setError(result.error);
+            setError(result.error || 'Invalid credentials');
         }
         setLoading(false);
     };
