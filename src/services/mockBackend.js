@@ -715,6 +715,4 @@ export const mockBackend = {
         mockBackend.counselingChats[ticketId].push(newMsg);
         return newMsg;
     }
-        { id: 5, teacher: 'Dr. Bhavana', subject: 'Computer Science', date: 'May 10, 2026', remark: 'Missed submitting the homework for Laplace Transforms. Please check.', type: 'Alert', read: false },
-    ]
 };

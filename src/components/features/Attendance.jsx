@@ -2493,7 +2493,10 @@ const Attendance = () => {
             )}
             </>
             ) : (
-                renderValidationStudio()
+                <div style={{ padding: '4rem', textAlign: 'center', color: '#64748b' }}>
+                    <h3 style={{ color: '#1e293b', marginBottom: '1rem' }}>Validation Studio</h3>
+                    <p>This advanced verification module is currently under construction for Face Pay integration.</p>
+                </div>
             )}
 
             {/* Upload Modal */}

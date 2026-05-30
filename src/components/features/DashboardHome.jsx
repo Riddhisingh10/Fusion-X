@@ -141,8 +141,9 @@ const DashboardHome = () => {
         { day: 'Sun', hours: 1 },
     ];
     // Render logic by User Role
-    const isAdmin = user?.role === 'admin';
-    const isTeacher = user?.role === 'teacher';
+    const role = user?.role || 'student';
+    const isAdmin = role === 'admin';
+    const isTeacher = role === 'teacher';
     if (isAdmin) {
         return (
             <div className="dashboard-home-container admin-theme animate-enter">
@@ -1438,8 +1439,8 @@ const DashboardHome = () => {
         <div className="dashboard-home-container animate-enter">
             <div className="welcome-banner">
                 <div>
-                    <h2>Welcome back, {role === 'teacher' ? `Professor ${user?.name || 'Teacher'}` : (user?.name || 'Student')}!</h2>
-                    <p>{role === 'teacher' ? 'Your centralized portal for class management and resource sharing.' : 'Your centralized hub for academic excellence.'}</p>
+                    <h2>Welcome back, {isTeacher ? `Professor ${user?.name || 'Teacher'}` : (user?.name || 'Student')}!</h2>
+                    <p>{isTeacher ? 'Your centralized portal for class management and resource sharing.' : 'Your centralized hub for academic excellence.'}</p>
                 </div>
                 <div className="date-badge">
                     <Calendar size={16} />

@@ -6,9 +6,16 @@ import sys
 import pickle
 import argparse
 import requests
-import cv2
-import face_recognition
+import requests
 
+# Try to import heavy ML dependencies, fallback gracefully if not installed
+try:
+    import cv2
+    import face_recognition
+    ML_DEPS_INSTALLED = True
+except ImportError:
+    ML_DEPS_INSTALLED = False
+    print("[Warning] OpenCV or face_recognition not installed. Will run in simulated fallback mode.")
 # ---------------------------------------------------------
 # CONFIGURATION & PARAMETERS
 # ---------------------------------------------------------
@@ -45,6 +52,11 @@ def run_face_recognition(encodings_path, duration_seconds=5):
     """Opens webcam briefly, detects faces, matches against trained pickle encodings, and returns USNs"""
     print("[FACE RECOGNITION] Activating camera for check...")
     
+    # Fallback immediately if ML dependencies are not installed
+    if not ML_DEPS_INSTALLED:
+        print("[Warning] ML dependencies missing. Running in simulated fallback mode.")
+        return ["4VV25EC032"] # Fallback mock
+
     if not os.path.exists(encodings_path):
         print(f"[Warning] Encodings file '{encodings_path}' not found. Running in simulated fallback mode.")
         return ["4VV25EC032"] # Fallback mock
